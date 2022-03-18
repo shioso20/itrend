@@ -1,0 +1,16 @@
+streamlit
+pysqlite3
+Pillow
+pandas
+streamlit-authenticator
+Flask
+Flask-SQLAlchemy
+Flask-Login
+DateTime
+Flask-WTF
+WTForms
+gunicorn
+lxml
+seaborn
+plotly
+Flask-RESTful
