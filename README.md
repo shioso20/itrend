@@ -1,0 +1,2 @@
+# itrend
+sales management application
