@@ -1,2 +1,2 @@
-# itrend
-sales management application
+# boxing
+sales management web app
