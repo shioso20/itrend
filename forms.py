@@ -6,14 +6,14 @@ from flask_wtf import FlaskForm
 import sqlite3
 from pop_users import con_both
 import pandas as pd
-from items import fetch
+#from items import fetch
 from wtforms.validators import DataRequired,Email,EqualTo,Length,ValidationError
 from wtforms import StringField,IntegerField,SelectField,SubmitField,PasswordField,BooleanField,TextAreaField
 from flask_login import current_user,UserMixin,login_user,logout_user,UserMixin,login_required
 from flask_restful import Resource,Api
 from item_form import connect
-from srs import sr_names
-from organ_emp import get_emp_id
+from srs import sr_names,get_emp_id
+#from organ_emp import get_emp_id
 app=Flask(__name__,template_folder='template')
 key='@boxing'
 app.config['SECRET_KEY']=key
@@ -58,7 +58,10 @@ class orders(data.Model):
     s_id=data.Column(data.Integer,data.ForeignKey('member.eid'),nullable=False)
     def __repr__(self):
         return str(self.id)
-@app.route('/',methods=['GET','POST'])
+@app.route('/')
+def index():
+    return render_template('index.html')
+@app.route('/login',methods=['GET','POST'])
 def login():
     con_both()
     form=logform()

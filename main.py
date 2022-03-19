@@ -16,11 +16,14 @@ st.get_option("theme.textColor")
 #creating login page
 def back_im():
     background = Image.open('back.jpeg')
-    st.image(background, width=650)
+    st.image(background, width=800)
 
 ex=st.expander("MENU")
 ex.write("Things to note")
-ex.write("Order Here [link](https://boxingsales.herokuapp.com/home)")
+ex.write("Order Here [link](https://boxingsales.herokuapp.com/)")
+st.sidebar.markdown("<i style='text-align: center; font-size: 20px; color: tomato;'>ITREND</i>", unsafe_allow_html=True)
+background = Image.open('back.jpeg')
+st.sidebar.image(background, width=70)
 log_ex=st.sidebar.expander("Create User")
 name=log_ex.text_input("Name")
 eid=log_ex.text_input("Employee Id")
@@ -61,7 +64,7 @@ if login_status==True:
                         st.warning("Item not found")
                     else:
                         st.header("Dispatched Orders")
-                        st.dataframe(dispatch(fetch_info(),sel_).style.apply(colors2))
+                        st.dataframe(dispatch(fetch_info(),sel_))
                         file_=download(dispatch(fetch_info(),sel_))
                         delete_info(sel_)
                         st.download_button(
