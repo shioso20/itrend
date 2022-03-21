@@ -81,6 +81,7 @@ def logout():
 @app.route('/home',methods=['GET','POST'])
 @login_required
 def home():
+    names=connect()
     if request.method=="POST":
         savings=orders(eid=current_user.eid,fname=get_emp_id(current_user.eid),phone=request.form["iphone"],
         item=request.form["iname"],size=request.form["isize"],quant=request.form["quantity"],
@@ -90,11 +91,11 @@ def home():
         data.session.add(savings)
         data.session.commit()
         return redirect(url_for('success'))
-    return render_template('order.html',names=connect())
+    return render_template('order.html',names=names)
 @app.route("/success")
 @login_required
 def success():
-    return render_template("success.html")
+    return render_template("suc.html")
 @app.route("/incoming")
 def dump_data():
     conx=sqlite3.connect("order.db")

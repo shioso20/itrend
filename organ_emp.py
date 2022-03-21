@@ -19,6 +19,7 @@ def menu():
 
     # saving employee infos
     if radc1=="add":
+        empid=exp.text_input("Employee ID ",placeholder="YYMMDDN0")
         id_no=exp.text_input("National id Number")
         name=exp.text_input("full name")
         gender=exp.selectbox("Gender",["Male","Female",""])
@@ -48,7 +49,7 @@ def menu():
                 time.sleep(0.01)
                 p.progress(i+1)
             try:
-                add_emp(id_no,name,gender,birth,doj,resign,comp,
+                add_emp(empid,id_no,name,gender,birth,doj,resign,comp,
                 Dep,post,role,status,attr,bank,bank_no,Nation,
                 addr,Emerg,marital,edu,major,gradu,salary,remark)
                 exp.info("Details added successfully")
@@ -135,16 +136,15 @@ def menu():
 
 
 
-def add_emp(id_no,name,gender,birth,doj,resign,comp,
+def add_emp(empid,id_no,name,gender,birth,doj,resign,comp,
 Dep,post,role,status,attr,bank,bank_no,Nation,
 addr,Emerg,marital,edu,major,gradu,salary,remark):
     # sqlite add employee info code here
     conn=sqlite3.connect("organisation.db")
     con=conn.cursor()
-    con.execute("create table if not exists employees(empid integer primary key autoincrement,idno integer,name text,gender string,DOB date,DOJ date,DOS date,company string,Department string,post string,role string,status string,job_attribute string,bank string,bank_no string,nationality string,address string,emergency_no string,marital_status string,education string,major string,DOG date,salary float,remark text)")
-    con.execute("insert into employees (idno,name,gender,DOB,DOJ,DOS,company,Department,post,role,status,job_attribute,Bank,bank_no,nationality,address,emergency_no,marital_status,education,major,DOG,salary,remark) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(id_no,name,gender,birth,doj,resign,comp,Dep,post,role,status,attr,bank,bank_no,Nation,addr,Emerg,marital,edu,major,gradu,salary,remark,))
+    con.execute("create table if not exists employees(empid integer,idno integer,name text,gender string,DOB date,DOJ date,DOS date,company string,Department string,post string,role string,status string,job_attribute string,bank string,bank_no string,nationality string,address string,emergency_no string,marital_status string,education string,major string,DOG date,salary float,remark text)")
+    con.execute("insert into employees (empid,idno,name,gender,DOB,DOJ,DOS,company,Department,post,role,status,job_attribute,Bank,bank_no,nationality,address,emergency_no,marital_status,education,major,DOG,salary,remark) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(empid,id_no,name,gender,birth,doj,resign,comp,Dep,post,role,status,attr,bank,bank_no,Nation,addr,Emerg,marital,edu,major,gradu,salary,remark,))
     conn.commit()
-
 
 def fetch_emp():
     # sqlite fetch code here
@@ -167,12 +167,3 @@ def delete_emp(id):
      con=conn.cursor()
      con.execute("delete from employees where empid=?",(id,))
      conn.commit()
-def get_emp_id(id):
-    connx=sqlite3.connect("organisation.db")
-    emp_data=pd.read_sql_query("select *from employees",connx)
-    x=[]
-    if len(emp_data.loc[emp_data["empid"]==id]["name"].to_list())>0:
-        x.append(emp_data.loc[emp_data["empid"]==id]["name"].to_list()[0])
-    else:
-        x.append("")
-    return x[0]

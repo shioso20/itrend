@@ -63,7 +63,7 @@ def order_menu():
 
 def incoming():
     try:
-        data=pd.read_html("https://boxingsales.herokuapp.com/incoming")
+        data=pd.read_html("http://127.0.0.1:5000/incoming")
         data=data[0]
         data["date"]=pd.to_datetime(data["date"],format="%Y/%m/%d").dt.date
         data["date"]=[str(d) for d in data["date"]]
