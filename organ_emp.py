@@ -65,7 +65,7 @@ def menu():
             try:
                 col1.dataframe(fetch_emp().style.apply(colors4))
                 file_=download(fetch_emp())
-                st.download_button(
+                col1.download_button(
                 "Export",
                 file_,
                 "all_employees.csv",
@@ -86,7 +86,7 @@ def menu():
                     d_f=data[data["empid"]==int(search)]
                     col1.dataframe(d_f)
                     file_=download(d_f)
-                    st.download_button(
+                    col1.download_button(
                     "Export",
                     file_,
                     "employees.csv",
@@ -103,18 +103,20 @@ def menu():
         "nationality","address","emergency_no","marital_status","education","major","DOG","salary","remark"])
         sets=exp.text_input("new value")
         if exp.button("edit"):
-            p=st.progress(0)
+            p=exp.progress(0)
             for i in range(100):
                 time.sleep(0.01)
                 p.progress(i+1)
+            data=fetch_emp()
+            d_f=data[data["empid"]==int(edit_id)]
             try:
-                if list(fetch_emp().empid).count(edit_id)>1:
+                if d_f.shape[0]>0:
                     edit_emp(change,sets,edit_id)
                     exp.info("Edited successfully")
                 else:
                     exp.warning("Employee not found..check id")
             except:
-                st.error("Encountered some error")
+                exp.error("Encountered some error")
 
     elif radc1=="delete":
         emp_id=exp.text_input("employee id to delete")
@@ -123,15 +125,17 @@ def menu():
             for i in range(100):
                 time.sleep(0.01)
                 p.progress(i+1)
+            data=fetch_emp()
+            d_f=data[data["empid"]==int(emp_id)]
             try:
-                if list(fetch_emp().empid).count(emp_id)>1:
+                if d_f.shape[0]>0:
                     delete_emp(emp_id)
                     exp.info("Employee removed successfully")
                 else:
                     exp.warning("Employee  not found..check id")
 
             except:
-                st.error("Encountered some error")
+                exp.error("Encountered some error")
     menu2(col1,col3)
 
 

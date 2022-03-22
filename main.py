@@ -29,7 +29,7 @@ name=log_ex.text_input("Name")
 eid=log_ex.text_input("Employee Id")
 pwd=log_ex.text_input("Create Password",type="password")
 pwd2=log_ex.text_input("Confirm Password",type="password")
-info=fetch_emp()
+#info=fetch_emp()
 
 if log_ex.button("Create User"):
     if pwd!=pwd2:

@@ -69,7 +69,7 @@ def menu2(col1,col3):
 
     elif radc2=="edit":
         # input edit by product id
-        edit_p_id=exp.text_input("edit by product id")
+        p_id=exp.text_input("edit by product id")
         change=exp.selectbox("field to edit",["Supplier","Category","Family","shopname"])
         sets=exp.text_input("new value")
         if exp.button("edit shop"):
@@ -77,8 +77,10 @@ def menu2(col1,col3):
             for i in range(100):
                 time.sleep(0.01)
                 progress.progress(i+1)
+            data=fetch_prod()
+            d_f=data[data["sid"]==int(p_id)]
             try:
-                if list(fetch_prod().sid).count(emp_id)>1:
+                if d_f.shape[0]>0:
                     edit_prod(change,sets,p_id)
                     exp.info("Edited successfully")
                 else:
@@ -92,8 +94,10 @@ def menu2(col1,col3):
             for i in range(100):
                 time.sleep(0.01)
                 progress.progress(i+1)
+            data=fetch_prod()
+            d_f=data[data["sid"]==int(p_id)]
             try:
-                if list(fetch_prod().sid).count(p_id)>1:
+                if d_f.shape[0]>0:
                     delete_prod(p_id)
                     exp.info("shop removed successfully")
                 else:
@@ -121,7 +125,7 @@ def edit_prod(val,set,id):
     # sqlite edit code
     conn=sqlite3.connect("shops.db")
     con=conn.cursor()
-    cmd="update supply set "+str(val)+" =? "+"where pid=?"
+    cmd="update supply set "+str(val)+" =? "+"where sid=?"
     con.execute(cmd,(set,id,))
     conn.commit()
 
@@ -129,4 +133,5 @@ def delete_prod(id):
      # delete products by id.
      conn=sqlite3.connect("shops.db")
      con=conn.cursor()
-     con.execute("delete from supply where pid=?",(id,))
+     con.execute("delete from supply where sid=?",(id,))
+     conn.commit()

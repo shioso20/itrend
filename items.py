@@ -43,8 +43,10 @@ def gui():
             for i in range(100):
                 time.sleep(0.01)
                 progress.progress(i+1)
+            data=fetch()
+            data_f=data[data["name"]==name]
             try:
-                if list(fetch().name).count(name)>1:
+                if data_f.shape[0]>0:
                     delete(name)
                     drop.info("Item deleted successfully")
                 else:
@@ -62,6 +64,7 @@ def fetch():
     df=pd.read_sql_query("select *from prod",conn)
     return df
 def delete(name):
-    conn=sq.conect("item.db")
+    conn=sq.connect("item.db")
     cur=conn.cursor()
     cur.execute("delete from prod where name=?",(name,))
+    conn.commit()
