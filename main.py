@@ -41,10 +41,10 @@ if log_ex.button("Create User"):
         st.write("User created successfully")
 names,usernames,passwords=retrv_log()
 usernames=[str(i) for i in usernames]
-passwords = stauth.hasher(passwords).generate()
-logins= stauth.authenticate(names,usernames,passwords,
+passwords = stauth.Hasher(passwords).generate()
+logins= stauth.Authenticate(names,usernames,passwords,
     'some_cookie_name','some_signature_key',cookie_expiry_days=30)
-name,login_status = logins.login('Login','sidebar')
+name,login_status,username = logins.login('Login','sidebar')
 if login_status==True:
     rad1 = st.sidebar.radio("menu",["ORGANISATION","DISTRIBUTION MANAGEMENT",
                     "SUPPLY MANAGEMENT","CUSTOMER INFO","MARKET INFO"])

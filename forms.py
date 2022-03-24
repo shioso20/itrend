@@ -96,6 +96,13 @@ def home():
 @login_required
 def success():
     return render_template("suc.html")
+@app.route("/sales")
+@login_required
+def sales():
+    info=orders.query.filter_by(eid=current_user.eid).all()
+    print(info)
+    return render_template("sales.html",info=info)
+
 @app.route("/incoming")
 def dump_data():
     conx=sqlite3.connect("order.db")
@@ -105,6 +112,11 @@ def dump_data():
     file.write(html_data)
     file.close()
     return render_template("data.html")
+@app.route("/sales/delete/<int:id>")
+def delete(id):
+    data.session.delete(id)
+    data.session.commit()
+    return redirect(url_for('sales'))
 @app.errorhandler(404)
 def error404(error):
     return render_template('404.html'),404
