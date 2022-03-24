@@ -99,9 +99,9 @@ def success():
 @app.route("/sales")
 @login_required
 def sales():
-    info=orders.query.filter_by(eid=current_user.eid).all()
-    print(info)
-    return render_template("sales.html",info=info)
+    page=request.args.get("page",1,type=int)
+    info=orders.query.filter_by(eid=current_user.eid).paginate(page=page,per_page=5)
+    return render_template("sales.html",info=info,all=all)
 
 @app.route("/incoming")
 def dump_data():
@@ -114,7 +114,8 @@ def dump_data():
     return render_template("data.html")
 @app.route("/sales/delete/<int:id>")
 def delete(id):
-    data.session.delete(id)
+    row=orders.query.get_or_404(id)
+    data.session.delete(row)
     data.session.commit()
     return redirect(url_for('sales'))
 @app.errorhandler(404)

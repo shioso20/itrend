@@ -274,7 +274,7 @@ $(document).ready(function(){
 					</div>
 					<div class="col-sm-6">
 						<a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Customer info</span></a>
-						<a href="#deleteEmployeeModal" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Delete History</span></a>
+
 					</div>
 				</div>
 			</div>
@@ -283,6 +283,7 @@ $(document).ready(function(){
 					<tr>
 
 						<th>My id</th>
+						<th>Date </th>
 						<th>Item</th>
 						<th>Size</th>
 						<th>Quantity</th>
@@ -294,9 +295,10 @@ $(document).ready(function(){
 					</tr>
 				</thead>
 				<tbody style="color:blue">
-					{% for data in info %}
+					{% for data in info.items %}
 					<tr>
 						<td>{{data.eid}}</td>
+						<td>{{data.ddate}}</td>
 						<td>{{data.item}}</td>
 						<td>{{data.size}}</td>
 						<td>{{data.quant}}</td>
@@ -308,19 +310,39 @@ $(document).ready(function(){
 							<a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Revoke">&#xE872;</i></a>
 						</td>
 					</tr>
+					<div id="deleteEmployeeModal" class="modal fade">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<form action="/sales/delete/{{data.id}}">
+									<div class="modal-header">
+										<h4 class="modal-title">Revoke Order</h4>
+										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+									</div>
+									<div class="modal-body">
+										<p>Are you sure you want to Revoke this order?</p>
+										<p class="text-warning"><small>This action cannot be undone.</small></p>
+									</div>
+									<div class="modal-footer">
+										<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+										<input type="submit" class="btn btn-danger" value="Delete">
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
 					{% endfor %}
 				</tbody>
 			</table>
 			<div class="clearfix">
-				<div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
+				<div class="hint-text">Showing <b>5</b> entries</div>
 				<ul class="pagination">
-					<li class="page-item disabled"><a href="#">Previous</a></li>
-					<li class="page-item"><a href="#" class="page-link">1</a></li>
-					<li class="page-item"><a href="#" class="page-link">2</a></li>
-					<li class="page-item active"><a href="#" class="page-link">3</a></li>
-					<li class="page-item"><a href="#" class="page-link">4</a></li>
-					<li class="page-item"><a href="#" class="page-link">5</a></li>
-					<li class="page-item"><a href="#" class="page-link">Next</a></li>
+					{% for pages in info.iter_pages() %}
+					{% if pages %}
+						<li class="page-item"><a href="{{url_for('sales',page=pages)}}" class="page-link">{{pages}}</a></li>
+					{% else %}
+					 ...
+					 {% endif %}
+           {% endfor %}
 				</ul>
 			</div>
 		</div>
@@ -363,25 +385,6 @@ $(document).ready(function(){
 	</div>
 </div>
 
-<div id="deleteEmployeeModal" class="modal fade">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<form action="">
-				<div class="modal-header">
-					<h4 class="modal-title">Revoke Order</h4>
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				</div>
-				<div class="modal-body">
-					<p>Are you sure you want to Revoke this order?</p>
-					<p class="text-warning"><small>This action cannot be undone.</small></p>
-				</div>
-				<div class="modal-footer">
-					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input type="submit" class="btn btn-danger" value="Delete">
-				</div>
-			</form>
-		</div>
-	</div>
-</div>
+
 </body>
 </html>
