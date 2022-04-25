@@ -10,7 +10,7 @@ import pandas as pd
 from wtforms.validators import DataRequired,Email,EqualTo,Length,ValidationError
 from wtforms import StringField,IntegerField,SelectField,SubmitField,PasswordField,BooleanField,TextAreaField
 from flask_login import current_user,UserMixin,login_user,logout_user,UserMixin,login_required
-from flask_restful import Resource,Api
+#from flask_restful import Resource,Api
 from item_form import connect
 from srs import sr_names,get_emp_id
 from check import scan_qr
@@ -21,7 +21,7 @@ app.config['SECRET_KEY']=key
 app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///order.db'
 data=SQLAlchemy(app)
 lm=l(app)
-api=Api(app)
+#api=Api(app)
 @lm.user_loader
 def load_user(s_id):
     return member.query.get(int(s_id))
@@ -121,8 +121,11 @@ def delete(id):
     return redirect(url_for('sales'))
 @app.route("/camera")
 def get_cam():
-    code=scan_qr()
+    scan_qr()
     return render_template("camera.html",code=code)
+@app.route("/confirm")
+def delivery():
+    return render_template("delivery.html")
 @app.errorhandler(404)
 def error404(error):
     return render_template('404.html'),404
