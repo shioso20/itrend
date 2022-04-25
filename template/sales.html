@@ -251,9 +251,9 @@ table.table .avatar {
 					<div class="col-sm-6">
 						<a href="{{url_for('sales')}}" class="btn btn-success" style="background-color:blue"> <span>Refresh</span></a>
 						<a href="{{url_for('sales')}}" class="btn btn-success" style="background-color:purple"> <span>Export</span></a>
-						<a href="{{url_for('sales')}}" class="btn btn-success" style="background-color:Tomato"> <span>Delivery </span></a>
+						<a href="#filterModal" class="btn btn-success" style="background-color:Tomato"> <span>Delivered </span></a>
 						<a href="#filterModal" class="btn btn-success" style="background-color:black" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>filter orders</span></a>
-						<a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add info</span></a>
+						<a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Customer</span></a>
 
 					</div>
 				</div>
@@ -314,7 +314,7 @@ table.table .avatar {
 				</tbody>
 			</table>
 			<div class="clearfix">
-				<div class="hint-text">Showing <b>5</b> entries</div>
+				
 				<ul class="pagination">
 					{% for pages in info.iter_pages() %}
 					{% if pages %}
@@ -334,7 +334,7 @@ table.table .avatar {
 		<div class="modal-content">
 			<form>
 				<div class="modal-header">
-					<h4 class="modal-title">Add Customer info</h4>
+					<h4 class="modal-title">Add Loyal Customer</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body">

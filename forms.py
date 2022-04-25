@@ -13,6 +13,7 @@ from flask_login import current_user,UserMixin,login_user,logout_user,UserMixin,
 from flask_restful import Resource,Api
 from item_form import connect
 from srs import sr_names,get_emp_id
+from check import scan_qr
 #from organ_emp import get_emp_id
 app=Flask(__name__,template_folder='template')
 key='@boxing'
@@ -118,6 +119,10 @@ def delete(id):
     data.session.delete(row)
     data.session.commit()
     return redirect(url_for('sales'))
+@app.route("/camera")
+def get_cam():
+    code=scan_qr()
+    return render_template("camera.html",code=code)
 @app.errorhandler(404)
 def error404(error):
     return render_template('404.html'),404

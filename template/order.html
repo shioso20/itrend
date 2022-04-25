@@ -187,6 +187,7 @@
   <body style="background-color:black";>
     <a href='{{url_for('logout')}}'><button>LOGOUT</button></a>
     <a href='{{url_for('sales')}}'><button>MANAGER</button></a>
+    <a href='{{url_for('get_cam')}}'><button>Confirm Delivery</button></a>
     {% with messages = get_flashed_messages() %}
    {% if messages %}
       {% for message in messages %}

@@ -1,11 +1,16 @@
-import pandas as pd
-import sqlite3
-from items import fetch
-import requests
-import json
-from supplier import incoming
-from datetime import datetime as dt
-df=incoming()
-df["date"]=pd.to_datetime(df["date"],format="%Y/%m/%d").dt.date
-df["date"]=[str(d) for d in df["date"]]
-print(df[(df['date'] >= '2022-02-24') & (df['date'] < '2022-11-02') & (df["eid"]==123)])
+import cv2
+from pyzbar.pyzbar import decode
+codes=[]
+def scan_qr():
+    cap=cv2.VideoCapture(0)
+    cam=True
+    while cam==True:
+        _,f=cap.read()
+        for val in decode(f):
+            codes.append(val.data.decode('utf-8'))
+        cv2.imshow('scan receipt',f)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+    cap.release()
+    cv2.destroyAllWindows()
+    return codes
