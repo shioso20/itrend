@@ -1,0 +1,39 @@
+<html>
+<form action method="post">
+  
+    <h1><strong>Receipt upload</strong></h1>
+    
+    <div class="form-group">
+      <label for="title">Any <span>Remark</span></label>
+      <input type="text" name="title" id="title" class="form-controll"/>
+    </div>
+    <div class="form-group">
+      <label for="caption">serial Code <span></span></label>
+      <input type="text" name="caption" id="caption" class="form-controll"/>
+    </div>
+    
+    <div class="form-group file-area">
+          <label for="images">Images <span></span></label>
+      <input type="file" name="images" id="images" required="required" multiple="multiple"/>
+      <div class="file-dummy">
+        <div class="success"></div>
+       <d iv class="default">Please select some files</div>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <button type="submit">Upload images</button>
+    </div>
+  </form>
+  <div class="form-group">
+  <a href="{{url_for('get_cam')}}">
+    <button>Scan Receipt</button>
+</a>
+</div>
+  
+  
+  
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:100,200,300,400,500,600,700' rel='stylesheet' type='text/css'>
+  <link href="static/css/cam.css" rel="stylesheet" type="text/css">
+  </html>
