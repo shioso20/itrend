@@ -17,6 +17,7 @@ import datetime
 st.get_option("theme.textColor")
 #getting user location
 def loc():
+    st.info("submit delivery details here")
     empid=st.text_input("Your Employee id")
     sid=st.text_input("Order serial number")
     date=datetime.datetime.now()
