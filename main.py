@@ -11,16 +11,20 @@ from customer import get_customer
 import sqlite3
 import pandas as pd
 from market import visuals
+from loc_b import get_loc,add,fetch
+import datetime
 # created navigation menu using radio button
 st.get_option("theme.textColor")
-#creating login page
-def back_im():
-    background = Image.open('back.jpeg')
-    st.image(background, width=600)
-
-ex=st.expander("MENU")
-ex.write("Things to note")
-ex.write("Order Here [link](https://boxingsales.herokuapp.com/)")
+#getting user location
+def loc():
+    empid=st.text_input("Your Employee id")
+    sid=st.text_input("Order serial number")
+    date=datetime.datetime.now()
+    loc=get_loc()
+    if st.button("submit location"):
+        #verify employee id
+        add(empid,sid,date,loc[0][0],loc[0][1])
+        st.info("location added successfully")
 st.sidebar.markdown("<i style='text-align: center; font-size: 20px; color: tomato;'>ITREND</i>", unsafe_allow_html=True)
 background = Image.open('back.jpeg')
 st.sidebar.image(background, width=70)
@@ -47,7 +51,7 @@ logins= stauth.Authenticate(names,usernames,passwords,
 name,login_status,username = logins.login('Login','sidebar')
 if login_status==True:
     rad1 = st.sidebar.radio("menu",["ORGANISATION","DISTRIBUTION MANAGEMENT",
-                    "SUPPLY MANAGEMENT","CUSTOMER INFO","MARKET INFO"])
+                    "SUPPLY MANAGEMENT","CUSTOMER INFO","MARKET INFO","Delivery Track"])
     if rad1=="ORGANISATION":
         menu()
     elif rad1=="DISTRIBUTION MANAGEMENT":
@@ -92,13 +96,19 @@ if login_status==True:
             conx=sqlite3.connect("dispatch.db")
             data=pd.read_sql_query("select *from dispatch",conx)
             visuals(data)
-
-
-
-
+    elif rad1=="Delivery Track":
+        loc_data=fetch()
+        st.write(loc_data)
+        eid=st.text_input("Employee id")
+        serial=st.text_input("Order id")
+        if st.button("search"):
+            del_loc=loc_data[(loc_data["empid"]==int(eid)) & (loc_data["barcode"]==int(serial))][["latitude","longitude"]]
+            st.write(del_loc)
+            st.map(del_loc)
 elif login_status==False:
-    back_im()
+    loc()
     st.sidebar.error("incorrect password")
 elif login_status==None:
-    back_im()
+    loc()
     st.sidebar.warning("insert Username and password")
+    
