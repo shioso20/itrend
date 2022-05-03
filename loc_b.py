@@ -28,11 +28,11 @@ def get_loc():
             loc.append([*locs.values()])
     return loc
 
-def add(empid,sid,date,lat,log):
+def add(empid,sid,scanned,date,lat,log):
     conn=sq.connect("loc.db")
     con=conn.cursor()
-    con.execute("create table if not exists location(empid string,barcode string,delivered date,latitude float,longitude float)")
-    con.execute("insert into location (empid,barcode,delivered,latitude,longitude) values(?,?,?,?,?)",(empid,sid,date,lat,log))
+    con.execute("create table if not exists location(empid string,barcode string,scanned,delivered date,latitude float,longitude float)")
+    con.execute("insert into location (empid,barcode,scanned,delivered,latitude,longitude) values(?,?,?,?,?,?)",(empid,sid,scanned,date,lat,log))
     conn.commit()
 def fetch():
     conn=sq.connect("loc.db")

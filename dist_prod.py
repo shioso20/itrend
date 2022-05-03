@@ -105,3 +105,5 @@ def delete_info(barcode):
     con=conn.cursor()
     con.execute("delete from dist_prod where Barcode=?",(barcode,))
     conn.commit()
+
+

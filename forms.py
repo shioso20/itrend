@@ -112,7 +112,7 @@ def sales():
 
 @app.route("/incoming")
 def dump_data():
-    conx=sqlite3.connect("order.db")
+    conx=sqlite3.connect("user_order.db")
     data=pd.read_sql_query("select *from orders",conx)
     html_data=data.to_html()
     file=open("template/data.html","w")

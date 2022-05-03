@@ -4,6 +4,7 @@ import requests
 import json
 import streamlit as st
 from style import colors
+import numpy as np
 # fetch orders made
 def order_menu():
     df=incoming()
@@ -33,7 +34,7 @@ def order_menu():
         elif empid!="":
             try:
                 st.dataframe(filter_all(df,date1,date2,empid).style.apply(colors))
-                file_=download(filter_date(df,date1,date2,empid))
+                file_=download(filter_all(df,date1,date2,empid))
                 st.download_button(
                 "Export",
                 file_,
@@ -69,7 +70,7 @@ def incoming():
         data["date"]=[str(d) for d in data["date"]]
         return data
     except:
-        st.error("Server Down...Contact server Admin")
+        st.error("Server Error...Contact Server Admin")
 
 def download(data):
     return data.to_csv().encode('utf-8')
@@ -96,6 +97,7 @@ def filter_all(df,fr,to,eid):
     return df[(df['date'] >= str(fr)) & (df['date'] <= str(to)) & (df["eid"]==int(eid))]
 def filter_eid(df,eid):
     return df[df["eid"]==int(eid)]
-
-
-print(incoming())
+def compare(df1,df2):
+    x=list(df2.barcode)
+    df1["status"]=np.where((df1["Barcode"]==i for i in x),"Waiting","Delivered")
+    return df1

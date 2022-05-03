@@ -13,3 +13,5 @@ def colors4(df):
 def colors5(df):
     color="brown"
     return [f'background-color:{color}']*len(df)
+def dcolor(df):
+    return [f'background-color:green']*len(df) if df.status else [f'background-color:red']*len(df)

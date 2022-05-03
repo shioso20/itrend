@@ -1,16 +1,10 @@
 import cv2
-from pyzbar.pyzbar import decode
-codes=[]
-def scan_qr():
-    cap=cv2.VideoCapture(0)
-    cam=True
-    while cam==True:
-        _,f=cap.read()
-        for val in decode(f):
-            codes.append(val.data.decode('utf-8'))
-        cv2.imshow('scan receipt',f)
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
-    cap.release()
-    cv2.destroyAllWindows()
-    return codes
+import numpy as np
+import pyzbar.pyzbar as pyzbar
+code=[]
+def load_receipt(file):
+    image = cv2.imread(file)
+    decodedObjects = pyzbar.decode(image)
+    for obj in decodedObjects:
+        code.append(obj.data)
+    return code[0].decode()

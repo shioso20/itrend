@@ -1,30 +1,37 @@
 import streamlit as st
 import streamlit_authenticator as stauth
 from organ_emp import menu
-from style import colors
+from style import colors,dcolor
 from PIL import Image
 from dist_prod import dist_menu,fetch_info,delete_info
 from auth import logs,retrv_log
 from organ_emp import fetch_emp
-from supplier import incoming,download,dispatch,delete_inc,get_dis,order_menu
+from supplier import incoming,download,dispatch,delete_inc,get_dis,order_menu,compare
 from customer import get_customer
 import sqlite3
 import pandas as pd
 from market import visuals
 from loc_b import get_loc,add,fetch
 import datetime
+from check import load_receipt
 # created navigation menu using radio button
 st.get_option("theme.textColor")
 #getting user location
 def loc():
-    st.info("submit delivery details here")
+    st.header("submit delivery details here")
     empid=st.text_input("Your Employee id")
     sid=st.text_input("Order serial number")
     date=datetime.datetime.now()
+    receipt=st.file_uploader("upload receipt",type=['png','jpd'])
+    scanned=[]
+    if receipt is not None:
+        scanned.append(load_receipt(receipt.name))
+    st.write("...serial extracted")
+    st.write(scanned)
     loc=get_loc()
     if st.button("submit location"):
         #verify employee id
-        add(empid,sid,date,loc[0][0],loc[0][1])
+        add(empid,sid,scanned[0],date,loc[0][0],loc[0][1])
         st.info("location added successfully")
 st.sidebar.markdown("<i style='text-align: center; font-size: 20px; color: tomato;'>ITREND</i>", unsafe_allow_html=True)
 background = Image.open('back.jpeg')
@@ -51,6 +58,7 @@ logins= stauth.Authenticate(names,usernames,passwords,
     'some_cookie_name','some_signature_key',cookie_expiry_days=30)
 name,login_status,username = logins.login('Login','sidebar')
 if login_status==True:
+    logins.logout("Logout",'sidebar')
     rad1 = st.sidebar.radio("menu",["ORGANISATION","DISTRIBUTION MANAGEMENT",
                     "SUPPLY MANAGEMENT","CUSTOMER INFO","MARKET INFO","Delivery Track"])
     if rad1=="ORGANISATION":
@@ -61,24 +69,24 @@ if login_status==True:
         st.header("Incoming Orders")
         order_menu()
         sel_=st.text_input("barcode")
-        if list(get_dis().Barcode).count(sel_)>1:
+        if list(get_dis().Barcode).count(sel_)>0:
             st.warning("order already dispatched")
         else:
             if st.button("Dispatch"):
                     if list(fetch_info().Barcode).count(sel_)<1:
                         st.warning("Item not found")
-                    else:
-                        st.header("Dispatched Orders")
-                        st.dataframe(dispatch(fetch_info(),sel_))
-                        file_=download(dispatch(fetch_info(),sel_))
-                        delete_info(sel_)
-                        st.download_button(
-                        "Export",
-                        file_,
-                        "dispatched_orders.csv",
-                        "text/csv",
-                        key="download-csv"
-                        )
+                    
+        st.header("Dispatched Orders")
+        st.write(dispatch(fetch_info(),sel_).drop_duplicates(subset=["Barcode"]))
+        file_=download(dispatch(fetch_info(),sel_).drop_duplicates(subset=["Barcode"]))
+        delete_info(sel_)
+        st.download_button(
+        "Export",
+        file_,
+        "dispatched_orders.csv",
+        "text/csv",
+        key="download-csv"
+        )                
     elif rad1=="CUSTOMER INFO":
         st.dataframe(get_customer().style.apply(colors))
         file_=download(get_customer())
@@ -99,11 +107,10 @@ if login_status==True:
             visuals(data)
     elif rad1=="Delivery Track":
         loc_data=fetch()
-        st.write(loc_data)
+        st.write(loc_data.astype(str))
         eid=st.text_input("Employee id")
-        serial=st.text_input("Order id")
         if st.button("search"):
-            del_loc=loc_data[(loc_data["empid"]==int(eid)) & (loc_data["barcode"]==int(serial))][["latitude","longitude"]]
+            del_loc=loc_data[(loc_data["empid"]==int(eid))][["latitude","longitude"]]
             st.write(del_loc)
             st.map(del_loc)
 elif login_status==False:
