@@ -1,6 +1,7 @@
 streamlit
 pysqlite3
 pyzbar
+zbar
 Pillow
 pandas
 streamlit-authenticator
