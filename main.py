@@ -25,13 +25,23 @@ def loc():
     receipt=st.file_uploader("upload receipt",type=['png','jpd'])
     scanned=[]
     if receipt is not None:
-        scanned.append(load_receipt(receipt.name))
+        try:
+            scanned.append(load_receipt(receipt.name))
+        except:
+            st.error("extraction failed..kindly upload clear picture")
     st.write("...serial extracted")
     st.write(scanned)
     loc=get_loc()
     if st.button("submit location"):
         #verify employee id
-        add(empid,sid,scanned[0],date,loc[0][0],loc[0][1])
+        try:
+            if len(scanned)>0:
+                add(empid,sid,scanned[0],date,loc[0][0],loc[0][1])
+            else:
+                add(empid,sid,0,date,loc[0][0],loc[0][1])
+        except:
+            st.error("Location not added..if persist contact Admin")
+            
         st.info("location added successfully")
 st.sidebar.markdown("<i style='text-align: center; font-size: 20px; color: tomato;'>ITREND</i>", unsafe_allow_html=True)
 background = Image.open('back.jpeg')
