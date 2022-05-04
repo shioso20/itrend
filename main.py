@@ -30,7 +30,7 @@ def loc():
         except:
             st.error("extraction failed..kindly upload clear picture")
     st.write("...serial extracted")
-    #st.write(scanne)
+    st.write(scanne)
     loc=get_loc()
     if st.button("submit location"):
         #verify employee id
