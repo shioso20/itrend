@@ -1,9 +1,9 @@
-import cv2
+from PIL import Image
 import numpy as np
 import pyzbar.pyzbar as pyzbar
 code=[]
 def load_receipt(file):
-    image = cv2.imread(file)
+    image =Image.open(file)
     decodedObjects = pyzbar.decode(image)
     for obj in decodedObjects:
         code.append(obj.data)
