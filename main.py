@@ -23,20 +23,14 @@ def loc():
     sid=st.text_input("Order serial number")
     date=datetime.datetime.now()
     receipt=st.file_uploader("upload receipt",type=['png','jpg'])
-    scanne=[]
-    if receipt is not None:
-        try:
-            scanne.append(load_receipt(receipt.name))
-        except:
-            st.error("extraction failed..kindly upload clear picture")
-    st.write("...serial extracted")
-    st.write(scanne)
     loc=get_loc()
     if st.button("submit location"):
         #verify employee id
         try:
-            if len(scanned)>0:
-                add(empid,sid,scanned[0],date,loc[0][0],loc[0][1])
+            if receipt is not None:
+                st.write("...serial extracted")
+                st.write(load_receipt(receipt.name))
+                add(empid,sid,load_receipt(receipt.name),date,loc[0][0],loc[0][1])
                 st.info("location added successfully")
             else:
                 add(empid,sid,0,date,loc[0][0],loc[0][1])
