@@ -22,7 +22,7 @@ def loc():
     empid=st.text_input("Your Employee id")
     sid=st.text_input("Order serial number")
     date=datetime.datetime.now()
-    receipt=st.file_uploader("upload receipt",type=['png','jpd'])
+    receipt=st.file_uploader("upload receipt",type=['png','jpg'])
     scanne=[]
     if receipt is not None:
         try:
@@ -30,7 +30,7 @@ def loc():
         except:
             st.error("extraction failed..kindly upload clear picture")
     st.write("...serial extracted")
-    st.write(scanne)
+    #st.write(scanne)
     loc=get_loc()
     if st.button("submit location"):
         #verify employee id
