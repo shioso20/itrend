@@ -37,12 +37,14 @@ def loc():
         try:
             if len(scanned)>0:
                 add(empid,sid,scanned[0],date,loc[0][0],loc[0][1])
+                st.info("location added successfully")
             else:
                 add(empid,sid,0,date,loc[0][0],loc[0][1])
+                st.info("location added successfully")
         except:
             st.error("Location not added..if persist contact Admin")
             
-        st.info("location added successfully")
+        
 st.sidebar.markdown("<i style='text-align: center; font-size: 20px; color: tomato;'>ITREND</i>", unsafe_allow_html=True)
 background = Image.open('back.jpeg')
 st.sidebar.image(background, width=70)
