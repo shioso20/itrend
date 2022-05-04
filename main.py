@@ -43,8 +43,8 @@ def loc():
                 st.info("location added successfully")
         except:
             st.error("Location not added..if persist contact Admin")
-       link = '[Back Home](http://itrend.pythonanywhere.com/)'
-       st.markdown(link, unsafe_allow_html=True)   
+        link = '[Back Home](http://itrend.pythonanywhere.com/)'
+        st.markdown(link, unsafe_allow_html=True)   
         
 st.sidebar.markdown("<i style='text-align: center; font-size: 20px; color: tomato;'>ITREND</i>", unsafe_allow_html=True)
 background = Image.open('back.jpeg')
