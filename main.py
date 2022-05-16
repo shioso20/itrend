@@ -76,7 +76,7 @@ if login_status==True:
     elif rad1=="SUPPLY MANAGEMENT":
         st.header("Incoming Orders")
         order_menu()
-        sel_=st.text_input("barcode to Dispatch")
+        sel_=st.text_input("Scan barcode to Dispatch")
         scan=list(sel_)
         if list(get_dis().Barcode).count(sel_)>0 and len(sel_)>0:
             st.warning("order already dispatched")
