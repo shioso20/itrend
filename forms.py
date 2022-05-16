@@ -8,13 +8,24 @@ import pandas as pd
 from wtforms.validators import DataRequired,Email,EqualTo,Length,ValidationError
 from wtforms import StringField,IntegerField,SelectField,SubmitField,PasswordField,BooleanField,TextAreaField
 from flask_login import current_user,UserMixin,login_user,logout_user,UserMixin,login_required
-from check import scan_qr
+from flask_mail import Mail, Message
 app=Flask(__name__,template_folder='template')
 key='@boxing'
 app.config['SECRET_KEY']=key
 app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///user_order.db'
+app.config['MAIL_SERVER']='smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USERNAME'] = 'tonykungu2@gmail.com'
+app.config['MAIL_PASSWORD'] = 'siyysipyizwiufvm'
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
+mail = Mail(app)
 data=SQLAlchemy(app)
 lm=l(app)
+def send_mssg(subject,recipient,sender,mssg):
+    msg = Message(subject,sender=sender,recipients =[recipient] )
+    msg.body = mssg
+    mail.send(msg)
 @lm.user_loader
 def load_user(s_id):
     return member.query.get(int(s_id))
@@ -58,8 +69,16 @@ class orders(data.Model):
     s_id=data.Column(data.Integer,data.ForeignKey('member.eid'),nullable=False)
     def __repr__(self):
         return str(self.id)
-@app.route('/')
+@app.route('/',methods=['GET','POST'])
 def index():
+    if request.method=="POST":
+        name=request.form["name"]
+        email=request.form["email"]
+        subject=request.form["subject"]
+        mssg=request.form["message"]
+        subject=str(subject)+" by "+ str(name)
+        send_mssg(subject,email,"tonykungu2@gmail.com",mssg)
+        return redirect(url_for('email_sent'))
     return render_template('index.html')
 @app.route('/register',methods=['GET','POST'])
 def reg():
@@ -132,6 +151,9 @@ def get_cam():
 @app.route("/confirm")
 def delivery():
     return render_template("delivery.html")
+@app.route("/email-sent-successfully")
+def email_sent():
+    return render_template('email')
 @app.errorhandler(404)
 def error404(error):
     return render_template('404.html'),404
