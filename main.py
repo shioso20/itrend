@@ -10,7 +10,8 @@ from supplier import incoming,download,dispatch,delete_inc,get_dis,order_menu,co
 from customer import get_customer
 import sqlite3
 import pandas as pd
-from market import visuals,dis_visuals
+from market import visuals
+from market import dis_visuals
 from loc_b import get_loc,add,fetch
 import datetime
 from check import load_receipt
