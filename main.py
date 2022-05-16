@@ -10,7 +10,7 @@ from supplier import incoming,download,dispatch,delete_inc,get_dis,order_menu,co
 from customer import get_customer
 import sqlite3
 import pandas as pd
-from market import visuals
+from market import visuals,dis_visuals
 from loc_b import get_loc,add,fetch
 import datetime
 from check import load_receipt
@@ -76,9 +76,11 @@ if login_status==True:
         st.header("Incoming Orders")
         order_menu()
         sel_=st.text_input("barcode")
-        if list(get_dis().Barcode).count(sel_)>0:
+        scan=list(sel_)
+        if list(get_dis().Barcode).count(sel_)>0 and len(sel_)>0:
             st.warning("order already dispatched")
         else:
+            st.info("Scan Item")
             if st.button("Dispatch"):
                     if list(fetch_info().Barcode).count(sel_)<1:
                         st.warning("Item not found")
@@ -111,7 +113,7 @@ if login_status==True:
         elif data_cat=="dispatched":
             conx=sqlite3.connect("dispatch.db")
             data=pd.read_sql_query("select *from dispatch",conx)
-            visuals(data)
+            dis_visuals(data)
     elif rad1=="Delivery Track":
         loc_data=fetch()
         st.write(loc_data.astype(str))
