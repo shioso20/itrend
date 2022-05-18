@@ -62,7 +62,7 @@ def menu():
         # input search by employee id
         emp_rad=exp.radio("",["All","filter"])
         if emp_rad=="All":
-            try:
+  
                 col1.dataframe(fetch_emp().style.apply(colors4))
                 file_=download(fetch_emp())
                 col1.download_button(
@@ -72,8 +72,7 @@ def menu():
                 "text/csv",
                 key="download-csv"
                 )
-            except:
-                st.error("Encountered some error")
+            
         elif emp_rad=="filter":
             search=col1.text_input("search by id")
             if col1.button("fetch"):
