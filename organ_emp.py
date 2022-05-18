@@ -75,8 +75,8 @@ def menu():
             except:
                 st.error("Encountered some error")
         elif emp_rad=="filter":
-            search=exp.text_input("search by id")
-            if exp.button("fetch"):
+            search=col1.text_input("search by id")
+            if col1.button("fetch"):
                 p=col1.progress(0)
                 for i in range(100):
                     time.sleep(0.01)
