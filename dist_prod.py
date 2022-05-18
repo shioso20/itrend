@@ -36,8 +36,8 @@ def dist_menu():
         pander1=c1.expander("Fetch")
         fetch_r=pander1.radio("",["All","filter"])
         if fetch_r=="filter":
-            id=pander1.text_input("Fetch by pid")
-            if pander1.button("fetch"):
+            id=c1.text_input("Fetch by pid")
+            if c1.button("fetch"):
                 data=fetch_info()
                 f_data=data[data["pid"]==int(id)]
                 st.write("--fetching")
@@ -71,8 +71,8 @@ def dist_menu():
             except:
                 st.error("Error Encountered")
         pander3=c2.expander("Delete")
-        d_id = pander3.text_input("pid")
-        if pander3.button("Delete"):
+        d_id = c2.text_input("pid")
+        if c2.button("Delete"):
             p=st.progress(0)
             for i in range(100):
                 time.sleep(0.01)
