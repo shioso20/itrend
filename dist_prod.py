@@ -68,7 +68,9 @@ def dist_menu():
         d_id = c2.text_input("Delete by barcode")
         if c2.button("Delete"):
             delete_info(d_id)
-            if True:
+            data=fetch_info()
+            f_data=data[data["Barcode"]==int(d_id)]
+            if f_data.shape[0]==0:
                 st.info("Item Deleted successfully")
             else:
                 st.error("Error Encountered")
