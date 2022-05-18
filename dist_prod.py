@@ -33,8 +33,7 @@ def dist_menu():
             else:
                 st.error("Error Encountered")
         c1,c2=st.columns((1,1))
-        pander1=c1.expander("Fetch")
-        fetch_r=pander1.radio("",["All","filter"])
+        fetch_r=c1.radio("",["All","filter"])
         if fetch_r=="filter":
             id=c1.text_input("Fetch by pid")
             if c1.button("fetch"):
