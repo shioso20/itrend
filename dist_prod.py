@@ -65,8 +65,7 @@ def dist_menu():
                 )
             except:
                 st.error("Error Encountered")
-        pander3=c2.expander("Delete")
-        d_id = c2.text_input("pid")
+        d_id = c2.text_input("Delete by barcode")
         if c2.button("Delete"):
             delete_info(d_id)
             if True:
