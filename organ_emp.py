@@ -97,13 +97,13 @@ def menu():
                     st.error("Encountered some error")
     elif radc1=="edit":
         # input for id to edit
-        edit_id=exp.text_input("edit employee id")
-        change=exp.selectbox("field to edit",["idno","name","gender","DOB","DOJ","DOS"
+        edit_id=col1.text_input("edit employee id")
+        change=col1.selectbox("field to edit",["idno","name","gender","DOB","DOJ","DOS"
         ,"company","Department","post","role","status","job_attribute","Bank","bank_no",
         "nationality","address","emergency_no","marital_status","education","major","DOG","salary","remark"])
-        sets=exp.text_input("new value")
-        if exp.button("edit"):
-            p=exp.progress(0)
+        sets=col1.text_input("new value")
+        if col1.button("edit"):
+            p=col1.progress(0)
             for i in range(100):
                 time.sleep(0.01)
                 p.progress(i+1)
@@ -112,16 +112,16 @@ def menu():
             try:
                 if d_f.shape[0]>0:
                     edit_emp(change,sets,edit_id)
-                    exp.info("Edited successfully")
+                    col1.info("Edited successfully")
                 else:
-                    exp.warning("Employee not found..check id")
+                    col1.warning("Employee not found..check id")
             except:
-                exp.error("Encountered some error")
+                col1.error("Encountered some error")
 
     elif radc1=="delete":
-        emp_id=exp.text_input("employee id to delete")
-        if exp.button("Delete"):
-            p=exp.progress(0)
+        emp_id=col1.text_input("employee id to delete")
+        if col1.button("Delete"):
+            p=col1.progress(0)
             for i in range(100):
                 time.sleep(0.01)
                 p.progress(i+1)
@@ -130,12 +130,12 @@ def menu():
             try:
                 if d_f.shape[0]>0:
                     delete_emp(emp_id)
-                    exp.info("Employee removed successfully")
+                    col1.info("Employee removed successfully")
                 else:
-                    exp.warning("Employee  not found..check id")
+                    col1.warning("Employee  not found..check id")
 
             except:
-                exp.error("Encountered some error")
+                col1.error("Encountered some error")
     menu2(col1,col3)
 
 
