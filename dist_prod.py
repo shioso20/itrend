@@ -41,10 +41,6 @@ def dist_menu():
                 data=fetch_info()
                 f_data=data[data["pid"]==int(id)]
                 st.write("--fetching")
-                p=st.progress(0)
-                for i in range(100):
-                    time.sleep(0.01)
-                    p.progress(i+1)
                 try:
                     st.dataframe(f_data.style.apply(colors5))
                     file_=download(f_data)
@@ -73,11 +69,6 @@ def dist_menu():
         pander3=c2.expander("Delete")
         d_id = c2.text_input("pid")
         if c2.button("Delete"):
-            p=st.progress(0)
-            for i in range(100):
-                time.sleep(0.01)
-                p.progress(i+1)
-
             delete_info(d_id)
             if True:
                 st.info("Item Deleted successfully")
