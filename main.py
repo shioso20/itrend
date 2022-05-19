@@ -17,6 +17,15 @@ import datetime
 from check import load_receipt
 # created navigation menu using radio button
 st.get_option("theme.textColor")
+import streamlit as st
+
+hide_menu_style = """
+        <style>
+        #MainMenu {visibility: hidden;}
+        footer {visibility: hidden;}
+        </style>
+        """
+st.markdown(hide_menu_style, unsafe_allow_html=True)
 #getting user location
 def loc():
     st.header("submit delivery details here")
