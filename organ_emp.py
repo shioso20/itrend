@@ -65,7 +65,7 @@ def menu():
                 col1.dataframe(fetch_emp().style.apply(colors4))
                 file_=download(fetch_emp())
                 col1.download_button(
-                "col1ort",
+                "Export",
                 file_,
                 "all_employees.csv",
                 "text/csv",
