@@ -44,7 +44,7 @@ def menu2(col1,col3):
                     col3.dataframe(s_f_fetch_d.style.apply(colors4))
                     file_=download(s_f_fetch_d)
                     col3.download_button(
-                    "Export",
+                    "Export shops",
                     file_,
                     "filtered_shops.csv",
                     "text/csv",
@@ -57,7 +57,7 @@ def menu2(col1,col3):
                 col3.dataframe(fetch_prod().style.apply(colors4))
                 file_=download(fetch_prod())
                 col3.download_button(
-                "Export",
+                "Export shops",
                 file_,
                 "all_shops.csv",
                 "text/csv",
