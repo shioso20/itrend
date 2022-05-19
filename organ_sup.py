@@ -57,7 +57,7 @@ def menu2(col1,col3):
                 col3.dataframe(fetch_prod().style.apply(colors4))
                 file_=download(fetch_prod())
                 col3.download_button(
-                "col3ort",
+                "Export",
                 file_,
                 "all_shops.csv",
                 "text/csv",
