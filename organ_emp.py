@@ -13,38 +13,37 @@ def menu():
     gui()
     col1,col3=st.columns((1,1))
     # create selection menu
-    exp=col1.expander("Employee field")
-    exp.write("""**About**""")
-    radc1 = exp.selectbox("options",["fetch","add","edit","delete"])
+    col1.header("Employee field")
+    radc1 = col1.radio("options",["fetch","add","edit","delete"])
 
     # saving employee infos
     if radc1=="add":
-        empid=exp.text_input("Employee ID ",placeholder="YYMMDDN0")
-        id_no=exp.text_input("National id Number")
-        name=exp.text_input("full name")
-        gender=exp.selectbox("Gender",["Male","Female",""])
-        birth=exp.date_input("Date of birth",min_value=datetime.date(year=1960,month=1,day=1))
-        doj=exp.date_input("date of joining",min_value=datetime.date(year=1960,month=1,day=1))
-        resign=exp.date_input("date of resigning",min_value=datetime.date(year=1960,month=1,day=1))
-        comp=exp.text_input("company")
-        Dep=exp.text_input("Department")
-        post=exp.text_input("Post Title")
-        role=exp.text_input("Role name")
-        status=exp.selectbox("Status",["working","leave","Resigned"])
-        attr=exp.text_input("Job attributes")
-        bank=exp.text_input("Bank name")
-        bank_no=exp.text_input("Bank Card Number")
-        Nation=exp.text_input("Nationality")
-        addr=exp.text_input("Address")
-        Emerg=exp.text_input("Emergency contact number")
-        marital=exp.selectbox("Marital status",["Married","Single",""])
-        edu=exp.selectbox("Education Level",["Primary school","High school","Bachelors","Masters"])
-        major=exp.text_input("Major")
-        gradu=exp.date_input("Graduation date",min_value=datetime.date(year=1960,month=1,day=1))
-        salary=exp.text_input("Salary")
-        remark=exp.text_area("comments")
-        if exp.button("ADD INFO"):
-            p=exp.progress(0)
+        empid=col1.text_input("Employee ID ",placeholder="YYMMDDN0")
+        id_no=col1.text_input("National id Number")
+        name=col1.text_input("full name")
+        gender=col1.selectbox("Gender",["Male","Female",""])
+        birth=col1.date_input("Date of birth",min_value=datetime.date(year=1960,month=1,day=1))
+        doj=col1.date_input("date of joining",min_value=datetime.date(year=1960,month=1,day=1))
+        resign=col1.date_input("date of resigning",min_value=datetime.date(year=1960,month=1,day=1))
+        comp=col1.text_input("company")
+        Dep=col1.text_input("Department")
+        post=col1.text_input("Post Title")
+        role=col1.text_input("Role name")
+        status=col1.selectbox("Status",["working","leave","Resigned"])
+        attr=col1.text_input("Job attributes")
+        bank=col1.text_input("Bank name")
+        bank_no=col1.text_input("Bank Card Number")
+        Nation=col1.text_input("Nationality")
+        addr=col1.text_input("Address")
+        Emerg=col1.text_input("Emergency contact number")
+        marital=col1.selectbox("Marital status",["Married","Single",""])
+        edu=col1.selectbox("Education Level",["Primary school","High school","Bachelors","Masters"])
+        major=col1.text_input("Major")
+        gradu=col1.date_input("Graduation date",min_value=datetime.date(year=1960,month=1,day=1))
+        salary=col1.text_input("Salary")
+        remark=col1.text_area("comments")
+        if col1.button("ADD INFO"):
+            p=col1.progress(0)
             for i in range(100):
                 time.sleep(0.01)
                 p.progress(i+1)
@@ -52,7 +51,7 @@ def menu():
                 add_emp(empid,id_no,name,gender,birth,doj,resign,comp,
                 Dep,post,role,status,attr,bank,bank_no,Nation,
                 addr,Emerg,marital,edu,major,gradu,salary,remark)
-                exp.info("Details added successfully")
+                col1.info("Details added successfully")
             except:
                 st.error("Encountered some error")
 
@@ -60,13 +59,13 @@ def menu():
     # search employee by id
     elif radc1=="fetch":
         # input search by employee id
-        emp_rad=exp.radio("",["All","filter"])
+        emp_rad=col1.radio("",["All","filter"])
         if emp_rad=="All":
   
                 col1.dataframe(fetch_emp().style.apply(colors4))
                 file_=download(fetch_emp())
                 col1.download_button(
-                "Export",
+                "col1ort",
                 file_,
                 "all_employees.csv",
                 "text/csv",
