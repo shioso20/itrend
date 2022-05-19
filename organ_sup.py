@@ -1,171 +1,137 @@
 import streamlit as st
-import pandas as pd
 import sqlite3
+import pandas as pd
 import time
-from PIL import Image
-from organ_sup import menu2
-import datetime
-from items import gui
-from style import colors3,colors4
 from supplier import download
-#import random
-def menu():
-    gui()
-    col1,col3=st.columns((1,1))
-    # create selection menu
-    col1.header("Employee field")
-    radc1 = col1.radio("options",["fetch","add","edit","delete"])
-
-    # saving employee infos
-    if radc1=="add":
-        empid=col1.text_input("Employee ID ",placeholder="YYMMDDN0")
-        id_no=col1.text_input("National id Number")
-        name=col1.text_input("full name")
-        gender=col1.selectbox("Gender",["Male","Female",""])
-        birth=col1.date_input("Date of birth",min_value=datetime.date(year=1960,month=1,day=1))
-        doj=col1.date_input("date of joining",min_value=datetime.date(year=1960,month=1,day=1))
-        resign=col1.date_input("date of resigning",min_value=datetime.date(year=1960,month=1,day=1))
-        comp=col1.text_input("company")
-        Dep=col1.text_input("Department")
-        post=col1.text_input("Post Title")
-        role=col1.text_input("Role name")
-        status=col1.selectbox("Status",["working","leave","Resigned"])
-        attr=col1.text_input("Job attributes")
-        bank=col1.text_input("Bank name")
-        bank_no=col1.text_input("Bank Card Number")
-        Nation=col1.text_input("Nationality")
-        addr=col1.text_input("Address")
-        Emerg=col1.text_input("Emergency contact number")
-        marital=col1.selectbox("Marital status",["Married","Single",""])
-        edu=col1.selectbox("Education Level",["Primary school","High school","Bachelors","Masters"])
-        major=col1.text_input("Major")
-        gradu=col1.date_input("Graduation date",min_value=datetime.date(year=1960,month=1,day=1))
-        salary=col1.text_input("Salary")
-        remark=col1.text_area("comments")
-        if col1.button("ADD INFO"):
-            p=col1.progress(0)
+from style import colors4
+def menu2(col1,col3):
+    col3.header("Supply field")
+    radc2=col3.radio("",["fetch","add","edit","delete"])
+    if radc2=="add":
+        # add product info
+        shop=col3.text_input("Shop name")
+        category=col3.text_input("Shop Category")
+        supplier=col3.text_input("Supplier/Manager Name")
+        supplier_no=col3.text_input("Supplier Phone No")
+        Region=col3.text_input("Region")
+        Town=col3.text_input("Town")
+        street=col3.text_input("street")
+        remark=col3.text_area("Remark")
+        if col3.button("add shop"):
+            progress=col3.progress(0)
             for i in range(100):
                 time.sleep(0.01)
-                p.progress(i+1)
+                progress.progress(i+1)
             try:
-                add_emp(empid,id_no,name,gender,birth,doj,resign,comp,
-                Dep,post,role,status,attr,bank,bank_no,Nation,
-                addr,Emerg,marital,edu,major,gradu,salary,remark)
-                col1.info("Details added successfully")
+                add_prod(shop,category,supplier,supplier_no,Region,Town,street,remark)
+                col3.info("shop Added successfully")
             except:
                 st.error("Encountered some error")
-
-
-    # search employee by id
-    elif radc1=="fetch":
-        # input search by employee id
-        emp_rad=col1.radio("",["All","filter"])
-        if emp_rad=="All":
-  
-                col1.dataframe(fetch_emp().style.apply(colors4))
-                file_=download(fetch_emp())
-                col1.download_button(
-                "col1ort",
-                file_,
-                "all_employees.csv",
-                "text/csv",
-                key="download-csv"
-                )
-            
-        elif emp_rad=="filter":
-            search=col1.text_input("search by id")
-            if col1.button("fetch"):
-                p=col1.progress(0)
+    elif radc2=="fetch":
+        # input search by product id
+        s_fetch_r=col3.radio("",["All","filter_by"])
+        if s_fetch_r=="filter_by":
+            search=col3.text_input("search by shop id")
+            if col3.button("filter shop"):
+                col3.write("searching product")
+                progress=col3.progress(0)
                 for i in range(100):
                     time.sleep(0.01)
-                    p.progress(i+1)
+                    progress.progress(i+1)
                 try:
-                    data=fetch_emp()
-                    d_f=data[data["empid"]==int(search)]
-                    col1.dataframe(d_f)
-                    file_=download(d_f)
-                    col1.download_button(
+                    s_fetch_d=fetch_prod()
+                    s_f_fetch_d=s_fetch_d[s_fetch_d["sid"]==int(search)]
+                    col3.dataframe(s_f_fetch_d.style.apply(colors4))
+                    file_=download(s_f_fetch_d)
+                    col3.download_button(
                     "Export",
                     file_,
-                    "employees.csv",
+                    "filtered_shops.csv",
                     "text/csv",
                     key="download-csv"
                     )
                 except:
-                    st.error("Encountered some error")
-    elif radc1=="edit":
-        # input for id to edit
-        edit_id=col1.text_input("edit employee id")
-        change=col1.selectbox("field to edit",["idno","name","gender","DOB","DOJ","DOS"
-        ,"company","Department","post","role","status","job_attribute","Bank","bank_no",
-        "nationality","address","emergency_no","marital_status","education","major","DOG","salary","remark"])
-        sets=col1.text_input("new value")
-        if col1.button("edit"):
-            p=col1.progress(0)
+                    st.error("")
+        elif s_fetch_r=="All":
+            try:
+                col3.dataframe(fetch_prod().style.apply(colors4))
+                file_=download(fetch_prod())
+                col3.download_button(
+                "col3ort",
+                file_,
+                "all_shops.csv",
+                "text/csv",
+                key="download-csv"
+                )
+            except:
+                st.info("")
+
+
+    elif radc2=="edit":
+        # input edit by product id
+        p_id=col3.text_input("edit by product id")
+        change=col3.selectbox("field to edit",["Supplier","Category","Family","shopname"])
+        sets=col3.text_input("new value")
+        if col3.button("edit shop"):
+            progress=col3.progress(0)
             for i in range(100):
                 time.sleep(0.01)
-                p.progress(i+1)
-            data=fetch_emp()
-            d_f=data[data["empid"]==int(edit_id)]
+                progress.progress(i+1)
+            data=fetch_prod()
+            d_f=data[data["sid"]==int(p_id)]
             try:
                 if d_f.shape[0]>0:
-                    edit_emp(change,sets,edit_id)
-                    col1.info("Edited successfully")
+                    edit_prod(change,sets,p_id)
+                    col3.info("Edited successfully")
                 else:
-                    col1.warning("Employee not found..check id")
+                    col3.warning("shop not found")
             except:
-                col1.error("Encountered some error")
-
-    elif radc1=="delete":
-        emp_id=col1.text_input("employee id to delete")
-        if col1.button("Delete"):
-            p=col1.progress(0)
+                st.error("Encountered some error")
+    elif radc2=="delete":
+        p_id=col3.text_input("shop id to delete")
+        if col3.button("delete shop"):
+            progress=col3.progress(0)
             for i in range(100):
                 time.sleep(0.01)
-                p.progress(i+1)
-            data=fetch_emp()
-            d_f=data[data["empid"]==int(emp_id)]
+                progress.progress(i+1)
+            data=fetch_prod()
+            d_f=data[data["sid"]==int(p_id)]
             try:
                 if d_f.shape[0]>0:
-                    delete_emp(emp_id)
-                    col1.info("Employee removed successfully")
+                    delete_prod(p_id)
+                    col3.info("shop removed successfully")
                 else:
-                    col1.warning("Employee  not found..check id")
-
+                    col3.warning("shop not found")
             except:
-                col1.error("Encountered some error")
-    menu2(col1,col3)
-
-
-
-def add_emp(empid,id_no,name,gender,birth,doj,resign,comp,
-Dep,post,role,status,attr,bank,bank_no,Nation,
-addr,Emerg,marital,edu,major,gradu,salary,remark):
+                st.error("Encountered some error")
+def add_prod(shop,category,supplier,supplier_no,Region,Town,street,remark):
     # sqlite add employee info code here
-    conn=sqlite3.connect("organisation.db")
+    conn=sqlite3.connect("shops.db")
     con=conn.cursor()
-    con.execute("create table if not exists employees(empid integer,idno integer,name text,gender string,DOB date,DOJ date,DOS date,company string,Department string,post string,role string,status string,job_attribute string,bank string,bank_no string,nationality string,address string,emergency_no string,marital_status string,education string,major string,DOG date,salary float,remark text)")
-    con.execute("insert into employees (empid,idno,name,gender,DOB,DOJ,DOS,company,Department,post,role,status,job_attribute,Bank,bank_no,nationality,address,emergency_no,marital_status,education,major,DOG,salary,remark) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(empid,id_no,name,gender,birth,doj,resign,comp,Dep,post,role,status,attr,bank,bank_no,Nation,addr,Emerg,marital,edu,major,gradu,salary,remark,))
+    con.execute("create table if not exists supply(sid integer primary key autoincrement,shop string,Category string,supplier string,supplier_no string,Region string,Town string,street string,Remark text)")
+    con.execute("insert into supply (shop,Category,supplier,supplier_no,Region,Town,street,Remark) values (?,?,?,?,?,?,?,?)",(shop,category,supplier,supplier_no,Region,Town,street,remark,))
     conn.commit()
 
-def fetch_emp():
+
+def fetch_prod():
     # sqlite fetch code here
-    conn=sqlite3.connect("organisation.db")
-    data=pd.read_sql_query("select *from employees",conn)
+    conn=sqlite3.connect("shops.db")
+    data=pd.read_sql_query("select *from supply",conn)
+
 
     return data
 
-def edit_emp(val,set,id):
+def edit_prod(val,set,id):
     # sqlite edit code
-    conn=sqlite3.connect("organisation.db")
+    conn=sqlite3.connect("shops.db")
     con=conn.cursor()
-    cmd="update employees set "+str(val)+" =? "+"where empid=?"
+    cmd="update supply set "+str(val)+" =? "+"where sid=?"
     con.execute(cmd,(set,id,))
     conn.commit()
 
-def delete_emp(id):
-     # delete employee by id.
-     conn=sqlite3.connect("organisation.db")
+def delete_prod(id):
+     # delete products by id.
+     conn=sqlite3.connect("shops.db")
      con=conn.cursor()
-     con.execute("delete from employees where empid=?",(id,))
+     con.execute("delete from supply where sid=?",(id,))
      conn.commit()
