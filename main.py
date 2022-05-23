@@ -128,7 +128,7 @@ if login_status==True:
         loc_data=fetch()
         st.download_button(
         "Export",
-        loc_data,
+        download(loc_data),
         "delivered_orders.csv",
         "text/csv",
         key="download-csv"
