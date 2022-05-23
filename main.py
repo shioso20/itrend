@@ -126,6 +126,13 @@ if login_status==True:
             dis_visuals(data)
     elif rad1=="Delivery Track":
         loc_data=fetch()
+        st.download_button(
+        "Export",
+        loc_data,
+        "delivered_orders.csv",
+        "text/csv",
+        key="download-csv"
+        )
         st.write(loc_data.astype(str))
         eid=st.text_input("Employee id")
         if st.button("search"):
